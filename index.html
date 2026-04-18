@@ -11,7 +11,7 @@
 </head>
 <body>
   <header class="hero fade-down">
-    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200" alt="E-waste management banner showing recycling bins">
+    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200" alt="E-waste management banner">
     <div class="hero-text">
       <h1>E-Waste Management System</h1>
       <p>Smart Recycling & Pickup Tracking Platform</p>
@@ -19,23 +19,8 @@
   </header>
 
   <main class="container">
-    <section class="card slide-left">
-      <h2>User Login</h2>
-      <form id="login-form">
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" required>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" placeholder="Enter your password" required>
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </section>
-
     <section class="card slide-right">
-      <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800" alt="Recycling process showing e-waste items being sorted">
+      <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800" alt="Recycling process">
       <h2>Pickup Request</h2>
       <form id="pickup-form">
         <div class="form-group">
@@ -50,36 +35,28 @@
           <label for="pickup-address">Pickup Address</label>
           <input type="text" id="pickup-address" name="pickup_address" placeholder="Enter your address" required>
         </div>
-        <div class="form-group">
-          <label for="pickup-date">Preferred Pickup Date</label>
-          <input type="date" id="pickup-date" name="pickup_date" required>
-        </div>
         <button type="submit">Submit Request</button>
       </form>
     </section>
   </main>
 
   <section class="dashboard fade-up">
-    <h2>Admin Dashboard</h2>
+    <h2>Admin Dashboard - Pickup Requests</h2>
     <div class="table-wrapper">
-      <table role="table" aria-label="Recent pickup requests and their status">
+      <table role="table" aria-label="Pickup requests and their status">
         <thead>
           <tr>
-            <th>User</th>
-            <th>Waste Type</th>
+            <th>ID</th>
+            <th>Device Type</th>
+            <th>Quantity</th>
+            <th>Address</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Rahul</td>
-            <td>Laptop</td>
-            <td><span class="status pending">Pending</span></td>
-          </tr>
-          <tr>
-            <td>Anita</td>
-            <td>Battery</td>
-            <td><span class="status collected">Collected</span></td>
+            <td colspan="6" style="text-align: center; color: #999;">Loading requests...</td>
           </tr>
         </tbody>
       </table>
