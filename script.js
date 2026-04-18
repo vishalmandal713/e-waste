@@ -1,9 +1,16 @@
 // script.js
+const API_BASE_URL = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
+  ? "http://127.0.0.1:5000"
+  : "https://e-waste-3-zmft.onrender.com";
+
 window.onload = () => {
-  document.querySelector('.fade-down').classList.add('animate-down');
-  document.querySelector('.slide-left').classList.add('animate-left');
-  document.querySelector('.slide-right').classList.add('animate-right');
-  document.querySelector('.fade-up').classList.add('animate-up');
+  document.querySelector('.fade-down')?.classList.add('animate-down');
+  document.querySelector('.slide-left')?.classList.add('animate-left');
+  document.querySelector('.slide-right')?.classList.add('animate-right');
+  document.querySelector('.fade-up')?.classList.add('animate-up');
+  
+  // Load dashboard data on page load
+  loadPickupRequests();
 };
 
 const style = document.createElement('style');
@@ -19,79 +26,22 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
-// ===== LOGIN FORM HANDLER =====
-const loginForm = document.getElementById('login-form');
-if (loginForm) {
-  loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-    const API_BASE_URL = isLocal 
-      ? "http://127.0.0.1:5000" 
-      : "https://e-waste-2-v31k.onrender.com";
-
-    const data = {
-      email: document.getElementById('email').value,
-      password: document.getElementById('password').value
-    };
-
-    try {
-      const response = await fetch(`${API_BASE_URL}/api/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-
-      const result = await response.json();
-      
-      if (response.ok) {
-        alert('Login successful!');
-        // Store token if provided
-        if (result.token) {
-          localStorage.setItem('auth_token', result.token);
-        }
-        loginForm.reset();
-      } else {
-        alert(result.message || 'Login failed. Please try again.');
-      }
-    } catch (error) {
-      alert('Error connecting to server.');
-      console.error('Login error:', error);
-    }
-  });
-}
-
 // ===== PICKUP REQUEST FORM HANDLER =====
 const pickupForm = document.getElementById('pickup-form');
 if (pickupForm) {
   pickupForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
-    const API_BASE_URL = isLocal 
-      ? "http://127.0.0.1:5000" 
-      : "https://e-waste-2-v31k.onrender.com";
-
     const data = {
       device: document.getElementById('device-type').value,
       quantity: document.getElementById('quantity').value,
-      address: document.getElementById('pickup-address').value,
-      date: document.getElementById('pickup-date').value
+      address: document.getElementById('pickup-address').value
     };
 
     try {
-      const token = localStorage.getItem('auth_token');
-      const headers = {
-        'Content-Type': 'application/json'
-      };
-      
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
       const response = await fetch(`${API_BASE_URL}/api/request`, {
         method: 'POST',
-        headers: headers,
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
 
@@ -100,6 +50,8 @@ if (pickupForm) {
       if (response.ok) {
         alert(result.message || 'Pickup request submitted successfully!');
         pickupForm.reset();
+        // Reload dashboard after submission
+        loadPickupRequests();
       } else {
         alert(result.message || 'Failed to submit pickup request.');
       }
@@ -110,14 +62,94 @@ if (pickupForm) {
   });
 }
 
+// ===== LOAD PICKUP REQUESTS FOR DASHBOARD =====
+async function loadPickupRequests() {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/requests`);
+    const requests = await response.json();
+
+    const tbody = document.querySelector('table tbody');
+    if (!tbody) return;
+
+    // Clear existing rows (except header)
+    tbody.innerHTML = '';
+
+    // Add rows from API
+    requests.forEach(req => {
+      const row = document.createElement('tr');
+      const statusClass = req.status.toLowerCase();
+      row.innerHTML = `
+        <td>${req.id}</td>
+        <td>${req.device_type}</td>
+        <td>${req.quantity}</td>
+        <td>${req.address}</td>
+        <td><span class="status ${statusClass}">${req.status}</span></td>
+        <td>
+          <button class="btn-update" onclick="updateStatus(${req.id})">Update</button>
+          <button class="btn-delete" onclick="deleteRequest(${req.id})">Delete</button>
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  } catch (error) {
+    console.error('Error loading requests:', error);
+    alert('Failed to load requests');
+  }
+}
+
+// ===== UPDATE REQUEST STATUS =====
+async function updateStatus(requestId) {
+  const newStatus = prompt('Enter new status (Pending, Processing, Collected, Completed):');
+  if (!newStatus) return;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/request/${requestId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      alert('Request updated successfully!');
+      loadPickupRequests();
+    } else {
+      alert(result.message || 'Failed to update request');
+    }
+  } catch (error) {
+    alert('Error updating request');
+    console.error('Update error:', error);
+  }
+}
+
+// ===== DELETE REQUEST =====
+async function deleteRequest(requestId) {
+  if (!confirm('Are you sure you want to delete this request?')) return;
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/request/${requestId}`, {
+      method: 'DELETE'
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      alert('Request deleted successfully!');
+      loadPickupRequests();
+    } else {
+      alert(result.message || 'Failed to delete request');
+    }
+  } catch (error) {
+    alert('Error deleting request');
+    console.error('Delete error:', error);
+  }
+}
+
 // ===== UTILITY FUNCTIONS =====
-// Function to validate email
 function validateEmail(email) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 }
 
-// Function to log out
 function logout() {
   localStorage.removeItem('auth_token');
   alert('Logged out successfully!');
