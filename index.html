@@ -1,0 +1,50 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Waste Management System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero fade-down">
+    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200" alt="banner">
+    <div class="hero-text">
+      <h1>E-Waste Management System</h1>
+      <p>Smart Recycling & Pickup Tracking Platform</p>
+    </div>
+  </header>
+
+  <section class="container">
+    <div class="card slide-left">
+      <h2>User Login</h2>
+      <input type="email" placeholder="Email">
+      <input type="password" placeholder="Password">
+      <button>Login</button>
+    </div>
+
+    <div class="card slide-right">
+      <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800" alt="recycle">
+      <h2>Pickup Request</h2>
+      <input type="text" placeholder="Device Type">
+      <input type="number" placeholder="Quantity">
+      <input type="text" placeholder="Pickup Address">
+      <input type="date">
+      <button>Submit Request</button>
+    </div>
+  </section>
+
+  <section class="dashboard fade-up">
+    <h2>Admin Dashboard</h2>
+    <table>
+      <tr><th>User</th><th>Waste Type</th><th>Status</th></tr>
+      <tr><td>Rahul</td><td>Laptop</td><td>Pending</td></tr>
+      <tr><td>Anita</td><td>Battery</td><td>Collected</td></tr>
+    </table>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
