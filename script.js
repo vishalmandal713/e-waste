@@ -19,3 +19,11 @@ style.innerHTML = `
 @keyframes up{from{opacity:0;top:30px}to{opacity:1;top:0}}
 `;
 document.head.appendChild(style);
+
+const response = await fetch('https://your-backend.onrender.com/api/request', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+});
