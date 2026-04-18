@@ -1,0 +1,68 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="E-Waste Management System - Smart Recycling & Pickup Tracking Platform">
+  <meta name="theme-color" content="#10b981">
+  <title>E-Waste Management System</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero fade-down">
+    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200" alt="E-waste management banner">
+    <div class="hero-text">
+      <h1>E-Waste Management System</h1>
+      <p>Smart Recycling & Pickup Tracking Platform</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card slide-right">
+      <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800" alt="Recycling process">
+      <h2>Pickup Request</h2>
+      <form id="pickup-form">
+        <div class="form-group">
+          <label for="device-type">Device Type</label>
+          <input type="text" id="device-type" name="device_type" placeholder="e.g., Laptop, Phone" required>
+        </div>
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" name="quantity" placeholder="Number of items" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="pickup-address">Pickup Address</label>
+          <input type="text" id="pickup-address" name="pickup_address" placeholder="Enter your address" required>
+        </div>
+        <button type="submit">Submit Request</button>
+      </form>
+    </section>
+  </main>
+
+  <section class="dashboard fade-up">
+    <h2>Admin Dashboard - Pickup Requests</h2>
+    <div class="table-wrapper">
+      <table role="table" aria-label="Pickup requests and their status">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Device Type</th>
+            <th>Quantity</th>
+            <th>Address</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="6" style="text-align: center; color: #999;">Loading requests...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
