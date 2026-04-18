@@ -6,30 +6,42 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-DB_PATH = 'database.db'
+DB_PATH = os.path.join(os.path.dirname(__file__), 'database.db')
 
 def init_db():
     with sqlite3.connect(DB_PATH) as conn:
         conn.execute('''
             CREATE TABLE IF NOT EXISTS pickup_requests (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                device_type TEXT,
-                quantity INTEGER,
-                address TEXT,
+                device_type TEXT NOT NULL,
+                quantity INTEGER NOT NULL,
+                address TEXT NOT NULL,
                 status TEXT DEFAULT 'Pending'
             )
         ''')
-    conn.close()
 
 @app.route('/api/request', methods=['POST'])
 def pickup_request():
-    data = request.json
+    data = request.json or {}
+    
+    # Validate required fields
+    if not all([data.get('device'), data.get('quantity'), data.get('address')]):
+        return jsonify({"message": "Missing required fields"}), 400
+    
+    # Validate quantity
+    try:
+        quantity = int(data['quantity'])
+        if quantity <= 0:
+            return jsonify({"message": "Quantity must be positive"}), 400
+    except ValueError:
+        return jsonify({"message": "Invalid quantity format"}), 400
+    
     try:
         with sqlite3.connect(DB_PATH) as conn:
             cursor = conn.cursor()
             cursor.execute(
                 "INSERT INTO pickup_requests (device_type, quantity, address) VALUES (?, ?, ?)",
-                (data['device'], data['quantity'], data['address'])
+                (data['device'], quantity, data['address'])
             )
             conn.commit()
         return jsonify({"message": "Pickup request submitted successfully"}), 201
@@ -43,12 +55,10 @@ def get_requests():
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM pickup_requests")
         rows = cursor.fetchall()
-        # Convert sqlite rows to list of dictionaries
         requests_list = [dict(row) for row in rows]
     return jsonify(requests_list)
 
 if __name__ == '__main__':
     init_db()
-    # Bind to PORT provided by the cloud provider
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
