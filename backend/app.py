@@ -6,29 +6,33 @@ import os
 app = Flask(__name__)
 CORS(app)
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'database.db')
+# Use environment variable or default
+DB_PATH = os.environ.get('DB_PATH', os.path.join(os.path.dirname(__file__), 'database.db'))
 
 def init_db():
     with sqlite3.connect(DB_PATH) as conn:
         conn.execute('''
             CREATE TABLE IF NOT EXISTS pickup_requests (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                device_type TEXT NOT NULL,
+                device_type VARCHAR(100) NOT NULL,
                 quantity INTEGER NOT NULL,
                 address TEXT NOT NULL,
-                status TEXT DEFAULT 'Pending'
+                status VARCHAR(50) DEFAULT 'Pending',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({"status": "healthy"}), 200
 
 @app.route('/api/request', methods=['POST'])
 def pickup_request():
     data = request.json or {}
     
-    # Validate required fields
     if not all([data.get('device'), data.get('quantity'), data.get('address')]):
         return jsonify({"message": "Missing required fields"}), 400
     
-    # Validate quantity
     try:
         quantity = int(data['quantity'])
         if quantity <= 0:
@@ -61,4 +65,4 @@ def get_requests():
 if __name__ == '__main__':
     init_db()
     port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=False)
