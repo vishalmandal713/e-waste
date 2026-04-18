@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="E-Waste Management System - Login">
+  <meta name="theme-color" content="#10b981">
+  <title>Login - E-Waste Management</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .login-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+    .login-card {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+    }
+    .login-card h1 {
+      text-align: center;
+      color: #1f2937;
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+    .login-card p {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+    .toggle-link {
+      text-align: center;
+      margin-top: 20px;
+      color: #6b7280;
+    }
+    .toggle-link a {
+      color: #10b981;
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .toggle-link a:hover {
+      text-decoration: underline;
+    }
+    .error-message {
+      color: #dc2626;
+      background: #fee2e2;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      display: none;
+      border-left: 4px solid #dc2626;
+    }
+    .success-message {
+      color: #059669;
+      background: #d1fae5;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      display: none;
+      border-left: 4px solid #059669;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <!-- Login Form -->
+      <div id="login-form" class="auth-form">
+        <h1>E-Waste</h1>
+        <p>Login to your account</p>
+        <div class="error-message" id="login-error"></div>
+        <form id="login" onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit">Login</button>
+        </form>
+        <div class="toggle-link">
+          Don't have an account? <a onclick="toggleForm()">Register here</a>
+        </div>
+      </div>
+
+      <!-- Register Form -->
+      <div id="register-form" class="auth-form" style="display: none;">
+        <h1>E-Waste</h1>
+        <p>Create a new account</p>
+        <div class="error-message" id="register-error"></div>
+        <div class="success-message" id="register-success"></div>
+        <form id="register" onsubmit="handleRegister(event)">
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" placeholder="Create a password" required minlength="6">
+          </div>
+          <div class="form-group">
+            <label for="register-confirm">Confirm Password</label>
+            <input type="password" id="register-confirm" placeholder="Confirm password" required minlength="6">
+          </div>
+          <button type="submit">Register</button>
+        </form>
+        <div class="toggle-link">
+          Already have an account? <a onclick="toggleForm()">Login here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="login.js"></script>
+</body>
+</html>
