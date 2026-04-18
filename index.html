@@ -4,47 +4,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="E-Waste Management System - Smart Recycling & Pickup Tracking Platform">
+  <meta name="theme-color" content="#10b981">
   <title>E-Waste Management System</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="hero fade-down">
-    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200" alt="banner">
+    <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200" alt="E-waste management banner showing recycling bins">
     <div class="hero-text">
       <h1>E-Waste Management System</h1>
       <p>Smart Recycling & Pickup Tracking Platform</p>
     </div>
   </header>
 
-  <section class="container">
-    <div class="card slide-left">
+  <main class="container">
+    <section class="card slide-left">
       <h2>User Login</h2>
-      <input type="email" placeholder="Email">
-      <input type="password" placeholder="Password">
-      <button>Login</button>
-    </div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" placeholder="Enter your password" required>
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </section>
 
-    <div class="card slide-right">
-      <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800" alt="recycle">
+    <section class="card slide-right">
+      <img src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800" alt="Recycling process showing e-waste items being sorted">
       <h2>Pickup Request</h2>
-      <input type="text" placeholder="Device Type">
-      <input type="number" placeholder="Quantity">
-      <input type="text" placeholder="Pickup Address">
-      <input type="date">
-      <button>Submit Request</button>
-    </div>
-  </section>
+      <form id="pickup-form">
+        <div class="form-group">
+          <label for="device-type">Device Type</label>
+          <input type="text" id="device-type" name="device_type" placeholder="e.g., Laptop, Phone" required>
+        </div>
+        <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" id="quantity" name="quantity" placeholder="Number of items" min="1" required>
+        </div>
+        <div class="form-group">
+          <label for="pickup-address">Pickup Address</label>
+          <input type="text" id="pickup-address" name="pickup_address" placeholder="Enter your address" required>
+        </div>
+        <div class="form-group">
+          <label for="pickup-date">Preferred Pickup Date</label>
+          <input type="date" id="pickup-date" name="pickup_date" required>
+        </div>
+        <button type="submit">Submit Request</button>
+      </form>
+    </section>
+  </main>
 
   <section class="dashboard fade-up">
     <h2>Admin Dashboard</h2>
-    <table>
-      <tr><th>User</th><th>Waste Type</th><th>Status</th></tr>
-      <tr><td>Rahul</td><td>Laptop</td><td>Pending</td></tr>
-      <tr><td>Anita</td><td>Battery</td><td>Collected</td></tr>
-    </table>
+    <div class="table-wrapper">
+      <table role="table" aria-label="Recent pickup requests and their status">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Waste Type</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Rahul</td>
+            <td>Laptop</td>
+            <td><span class="status pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td>Anita</td>
+            <td>Battery</td>
+            <td><span class="status collected">Collected</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
   <script src="script.js"></script>
 </body>
 </html>
-
