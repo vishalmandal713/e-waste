@@ -1,31 +1,36 @@
+document.getElementById('pickupForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-// script.js
-window.onload = () => {
-  document.querySelector('.fade-down').classList.add('animate-down');
-  document.querySelector('.slide-left').classList.add('animate-left');
-  document.querySelector('.slide-right').classList.add('animate-right');
-  document.querySelector('.fade-up').classList.add('animate-up');
-};
+    // Determine API URL based on environment
+    const isLocal = window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost";
+    const API_BASE_URL = isLocal 
+        ? "http://127.0.0.1:5000" 
+        : "https://e-waste-2-v31k.onrender.com/api/requests"; // Replace with your actual URL after deploying
 
-const style = document.createElement('style');
-style.innerHTML = `
-.animate-down{animation:down .8s forwards;} 
-.animate-left{animation:left .8s .2s forwards;} 
-.animate-right{animation:right .8s .4s forwards;} 
-.animate-up{animation:up .8s .6s forwards;} 
-@keyframes down{from{opacity:0;top:-30px}to{opacity:1;top:0}}
-@keyframes left{from{opacity:0;left:-30px}to{opacity:1;left:0}}
-@keyframes right{from{opacity:0;left:30px}to{opacity:1;left:0}}
-@keyframes up{from{opacity:0;top:30px}to{opacity:1;top:0}}
-`;
-document.head.appendChild(style);
+    const data = {
+        device: document.getElementById('device').value,
+        quantity: document.getElementById('quantity').value,
+        address: document.getElementById('address').value
+    };
 
-const response = await fetch('https://e-waste-2-v31k.onrender.com/api/requests', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data)
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/request`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        const messageElement = document.getElementById('message');
+        
+        messageElement.innerText = result.message;
+        messageElement.style.color = response.ok ? "green" : "red";
+
+        if(response.ok) document.getElementById('pickupForm').reset();
+        
+    } catch (error) {
+        document.getElementById('message').innerText = "Error connecting to server.";
+        console.error("Fetch error:", error);
+    }
 });
-
 
