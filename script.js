@@ -20,10 +20,12 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
-const response = await fetch('https://your-backend.onrender.com/api/request', {
+const response = await fetch('https://e-waste-2-v31k.onrender.com/api/requests', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify(data)
 });
+
+
